@@ -75,6 +75,8 @@ Worksheets(cs).Range("K" & 2 + j).Value = percentage
 Worksheets(cs).Range("L" & 2 + j).Value = total_volume
 j = j + 1
 total_volume = 0
+    Else
+    total_volume = total_volume + Worksheets(cs).Cells(r, 7).Value
 'Create a small summary table
 'Outputs the greatest percentage increase name into P2
 Worksheets(cs).Range("P2").Value = greatest_increase_name
@@ -97,4 +99,4 @@ Next ws
 
 End Sub
 
-'DISCLOSURE - I worked on this assignment in cojuntion with Cody Osieczonek. Similar coding may come up as a result.
+'DISCLOSURE - I worked on this assignment in cojuntion with Cody Osieczonek. Similar coding may come up as a result. Many of my ideas also came from the activity solutions provided in the class repo. I also received assistance from AskBCS.
