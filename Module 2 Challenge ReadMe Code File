@@ -1,0 +1,100 @@
+Sub VBA_Challenge():
+
+'Start by declaring all necessary variables to complete all outlined objectives
+ Range("I1").Value = "Ticker"
+ Dim j As Double
+ Dim start As Long
+ Dim change As Double
+ Dim percentage As Double
+ Dim greatest_increase_name As String
+ Dim greatest_increase_value As Double
+ Dim greatest_decrease_name As String
+ Dim greatest_decrease_value As Double
+ Dim greatest_volume_name As String
+ Dim greatest_volume_value As Double
+ Dim cs As String
+ Dim countrows As Long
+ For Each ws In Worksheets
+ cs = ws.Name
+ change = 0
+ percentage = 0
+ j = 0
+ start = 2
+countrows = Worksheets(cs).UsedRange.Rows.Count
+ 
+'Step 1 - Script that 'loops through all stocks for single year and outputs ticker symbol
+    'Loop through rows in the column
+        For r = 2 To countrows
+    'Searches for when the value of the next cell is different than that of the current cell
+        If Worksheets(cs).Cells(r + 1, 1).Value <> Worksheets(cs).Cells(r, 1).Value Then
+        'Step 4 - Calculate the total stock volume of each ticker (skipping to here in order to make it work properly)
+        total_volume = total_volume + Worksheets(cs).Cells(r, 7).Value
+
+'Step 2 - Script that loops through all stocks for a single year and outputs the yearly change from the opening to the closing of the given year
+    change = Worksheets(cs).Cells(r, 6) - Worksheets(cs).Cells(start, 3)
+        
+'Step 3 - Script that loops through all stocks for the percentage change from the opening price to the closing price
+    percentage = change / Worksheets(cs).Cells(start, 3)
+    start = r + 1
+    'Indicate with green which percentage changes are positive and indicate red for which ones are negative
+    If change > 0 Then
+        Worksheets(cs).Range("J" & 2 + j).Interior.ColorIndex = 4
+    ElseIf change < 0 Then
+        Worksheets(cs).Range("J" & 2 + j).Interior.ColorIndex = 3
+    End If
+    
+'Step 5 - Create scripts that indicate which stock had the greatest % increase, greatest % decrease, and greatest total volume
+    'First indicate the greatest % increase
+    If percentage > greatest_increase_value Then
+            greatest_increase_value = percentage
+            greatest_increase_name = Worksheets(cs).Cells(r, 1).Value
+        End If
+    'Second indicate the greatest % decrease
+    If percentage < greatest_decrease_value Then
+            greatest_decrease_value = percentage
+            greatest_decrease_name = Worksheets(cs).Cells(r, 1).Value
+        End If
+    'Third indicate the greatest total volume
+    If total_volume > greatest_volume_value Then
+            greatest_volume_value = total_volume
+            greatest_volume_name = Worksheets(cs).Cells(r, 1).Value
+        End If
+        
+'Step 6 - Create code that copies this information to each year (each individual sheet for the year indicated)
+    'This was done with declaring worksheet variables and adding the proper code to each range and worksheet
+    
+    
+'Create output code that properly places the new values being created
+'Outputs only 1 ticker value for each stock that are different from column A into Column I
+Worksheets(cs).Range("I" & 2 + j).Value = Worksheets(cs).Cells(r, 1).Value
+'Outputs yearly change into column J
+Worksheets(cs).Range("J" & 2 + j).Value = change
+'Outputs percentage change into column K
+Worksheets(cs).Range("K" & 2 + j).Value = percentage
+'Outputs total stock volume into column L
+Worksheets(cs).Range("L" & 2 + j).Value = total_volume
+j = j + 1
+total_volume = 0
+'Create a small summary table
+'Outputs the greatest percentage increase name into P2
+Worksheets(cs).Range("P2").Value = greatest_increase_name
+'Outputs the greatest percentage increase value into Q2
+Worksheets(cs).Range("Q2").Value = greatest_increase_value
+'Outputs the greatest percentage decrease name into P3
+Worksheets(cs).Range("P3").Value = greatest_decrease_name
+'Outputs the greatest percentage decrease value into Q3
+Worksheets(cs).Range("Q3").Value = greatest_decrease_value
+'Outputs the greatest total volume name into P4
+Worksheets(cs).Range("P4").Value = greatest_volume_name
+'Outputs the greatest totoal volume value into Q4
+Worksheets(cs).Range("Q4").Value = greatest_volume_value
+
+End If
+    
+    Next r
+
+Next ws 
+
+End Sub
+
+'DISCLOSURE - I worked on this assignment in cojuntion with Cody Osieczonek. Similar coding may come up as a result.
